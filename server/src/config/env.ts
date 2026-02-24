@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const envSchema = z.object({
-  PORT: process.env.PORT || 3000,
+  PORT: z.coerce.number(),
 });
 
 const parsed = envSchema.safeParse(process.env);
