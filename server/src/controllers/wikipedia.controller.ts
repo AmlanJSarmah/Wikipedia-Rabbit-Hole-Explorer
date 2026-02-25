@@ -1,6 +1,12 @@
 import { Request, Response, NextFunction } from 'express';
 import { pageTitleSchema } from '../schemas/wikipedia.schema.js';
 import { AppError } from '../utils/error.js';
+import {
+  stripWikipediaLayout,
+  absolutizeUrls,
+  purifyConfig,
+  DOMPurify,
+} from '../utils/page.utils.js';
 
 export async function fetchWikipediaPage(
   req: Request,
@@ -11,6 +17,8 @@ export async function fetchWikipediaPage(
     const params = pageTitleSchema.parse(req.params);
     const pageTitle = params.title.slice(1, params.title.length);
     const encodedPageTitle = encodeURIComponent(pageTitle.trim());
+
+    // Fetch Wikipedia page
     const wikiPediaResponse = await fetch(
       `https://en.wikipedia.org/api/rest_v1/page/html/${encodedPageTitle}`,
       {
@@ -23,7 +31,14 @@ export async function fetchWikipediaPage(
       throw new AppError(wikiPediaResponse.status, 'Wikipedia Page Not Found');
     if (!wikiPediaResponse.ok)
       throw new AppError(wikiPediaResponse.status, 'Wikipedia Retrieve Error');
-    let wikiPediaPage = await wikiPediaResponse.text();
+    let wikiPediaPageRaw = await wikiPediaResponse.text();
+
+    // Sanitize Raw HTML to prevent Cross Site Scripting
+    let cleaned = stripWikipediaLayout(wikiPediaPageRaw);
+    let sanitized = DOMPurify.sanitize(cleaned, purifyConfig);
+    sanitized = absolutizeUrls(sanitized);
+    const wikiPediaPage = `<div class="wiki-content">${sanitized}</div>`;
+
     res.status(200).send({ message: 'page loaded', page: wikiPediaPage });
   } catch (err) {
     next(err);
