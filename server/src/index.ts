@@ -42,6 +42,7 @@ app.use(
         .status(err.statusCode)
         .json({ message: err.message, error: err });
     }
+    console.error(err);
     return res
       .status(500)
       .json({ message: 'Internal Server Error', error: err });

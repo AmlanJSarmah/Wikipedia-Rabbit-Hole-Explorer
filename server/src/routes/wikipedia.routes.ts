@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import { fetchWikipedia } from '../controllers/wikipedia.controller.js';
+import { fetchWikipediaPage } from '../controllers/wikipedia.controller.js';
 
 const router = Router();
 
-router.get('/page:title', fetchWikipedia);
+router.get('/page:title', fetchWikipediaPage);
 
 export default router;
