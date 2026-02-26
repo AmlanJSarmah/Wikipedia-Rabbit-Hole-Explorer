@@ -23,6 +23,8 @@ export async function fetchWikipediaPage(
       `https://en.wikipedia.org/api/rest_v1/page/html/${encodedPageTitle}`,
       {
         headers: {
+          'User-Agent':
+            'WikipediaRabbitHoleExplorer/0.1 (https://github.com/AmlanJSarmah/Wikipedia-Rabbit-Hole-Explorer; amlan.j.sarmah@gmail.com)',
           Accept: 'text/html; charset=utf-8',
         },
       }
