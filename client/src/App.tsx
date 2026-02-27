@@ -1,8 +1,18 @@
+import type { MouseEvent } from 'react';
+import { Button } from '@/components/ui/button';
+
+function handleButtonClick(
+  event: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>
+) {
+  console.log(event);
+}
+
 function App() {
   return (
-    <>
-      <h1>Hello World</h1>
-    </>
+    <div className="flex min-h-svh flex-col items-center justify-center">
+      <h1>Hello World!</h1>
+      <Button onClick={handleButtonClick}>Click me</Button>
+    </div>
   );
 }
 
