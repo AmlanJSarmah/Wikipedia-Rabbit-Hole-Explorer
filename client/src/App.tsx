@@ -2,6 +2,7 @@ import type { SubmitEvent, MouseEvent } from 'react';
 import { useState } from 'react';
 import Header from '@/components/Header';
 import WikipediaViewer from '@/components/WikipediaViewer';
+import Error from '@/components/Error.tsx';
 
 function App() {
   const [query, setQuery] = useState('');
@@ -15,24 +16,16 @@ function App() {
 
     setIsLoading(true);
     setError(null);
-
-    try {
-      const endpoint = `http://localhost:8080/wikipedia/page:${encodeURIComponent(
-        normalizedTitle
-      )}`;
-      const response = await fetch(endpoint);
-      if (!response.ok) {
-        throw new Error(`Request failed with status ${response.status}`);
-      }
-      const data = (await response.json()) as { page?: string };
-      setHtml(typeof data.page === 'string' ? data.page : '');
-    } catch (err) {
-      const message = err instanceof Error ? err.message : 'Request failed.';
-      setError(message);
-      setHtml('');
-    } finally {
-      setIsLoading(false);
+    const endpoint = `http://localhost:8080/wikipedia/page/${encodeURIComponent(
+      normalizedTitle
+    )}`;
+    const response = await fetch(endpoint);
+    const data = await response.json();
+    if (!response.ok) {
+      setError(data.message);
     }
+    setHtml(typeof data.page === 'string' ? data.page : '');
+    setIsLoading(false);
   }
 
   function extractWikipediaTitle(anchor: HTMLAnchorElement): string | null {
@@ -94,11 +87,7 @@ function App() {
           setQuery={setQuery}
           handleSubmit={handleSubmit}
         ></Header>
-        {error ? (
-          <div className="rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm text-destructive">
-            {error}
-          </div>
-        ) : null}
+        {error ? <Error message={error}></Error> : null}
       </div>
       <WikipediaViewer
         html={html}

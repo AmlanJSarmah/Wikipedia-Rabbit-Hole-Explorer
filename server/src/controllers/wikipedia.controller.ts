@@ -15,7 +15,7 @@ export async function fetchWikipediaPage(
 ) {
   try {
     const params = pageTitleSchema.parse(req.params);
-    const pageTitle = params.title.slice(1, params.title.length);
+    const pageTitle = params.title;
     const encodedPageTitle = encodeURIComponent(pageTitle.trim());
 
     // Fetch Wikipedia page
