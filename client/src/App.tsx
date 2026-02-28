@@ -1,4 +1,4 @@
-import type { FormEvent } from 'react';
+import type { SubmitEvent, MouseEvent } from 'react';
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 
@@ -8,22 +8,22 @@ function App() {
   const [error, setError] = useState<string | null>(null);
   const [html, setHtml] = useState('');
 
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
-    if (!query.trim()) return;
+  async function fetchPageByTitle(title: string) {
+    const normalizedTitle = title.trim();
+    if (!normalizedTitle) return;
 
     setIsLoading(true);
     setError(null);
 
     try {
       const endpoint = `http://localhost:8080/wikipedia/page:${encodeURIComponent(
-        query.trim()
+        normalizedTitle
       )}`;
       const response = await fetch(endpoint);
       if (!response.ok) {
         throw new Error(`Request failed with status ${response.status}`);
       }
-      const data = await response.json();
+      const data = (await response.json()) as { page?: string };
       setHtml(typeof data.page === 'string' ? data.page : '');
     } catch (err) {
       const message = err instanceof Error ? err.message : 'Request failed.';
@@ -32,6 +32,56 @@ function App() {
     } finally {
       setIsLoading(false);
     }
+  }
+
+  function extractWikipediaTitle(anchor: HTMLAnchorElement): string | null {
+    const href = anchor.getAttribute('href')?.trim() ?? '';
+    if (!href) return null;
+
+    const parseFromPath = (path: string) => {
+      const wikiIndex = path.indexOf('/wiki/');
+      if (wikiIndex === -1) return null;
+      const slug = path
+        .slice(wikiIndex + '/wiki/'.length)
+        .split('#')[0]
+        .split('?')[0];
+      if (!slug) return null;
+      return decodeURIComponent(slug).replace(/_/g, ' ');
+    };
+
+    if (href.startsWith('http')) {
+      try {
+        const url = new URL(href);
+        return parseFromPath(url.pathname);
+      } catch {
+        return null;
+      }
+    }
+
+    if (href.startsWith('/wiki/')) {
+      return parseFromPath(href);
+    }
+
+    return anchor.textContent?.trim() || null;
+  }
+
+  async function handleSubmit(event: SubmitEvent<HTMLFormElement>) {
+    event.preventDefault();
+    await fetchPageByTitle(query);
+  }
+
+  async function handleWikiClick(event: MouseEvent<HTMLDivElement>) {
+    const target = event.target as HTMLElement | null;
+    if (!target) return;
+    const anchor = target.closest('a');
+    if (!anchor) return;
+
+    const title = extractWikipediaTitle(anchor);
+    if (!title) return;
+
+    event.preventDefault();
+    setQuery(title);
+    await fetchPageByTitle(title);
   }
 
   return (
@@ -73,11 +123,12 @@ function App() {
         ) : null}
 
         <section className="w-full">
-          <div className="mx-auto w-[80%] rounded-2xl border border-border bg-card p-6 shadow-sm lg:w-[60%]">
+          <div className="mx-auto w-[90%] rounded-2xl border border-border bg-card p-6 shadow-sm  3xl:w-[60%]">
             {html ? (
               <div
-                className="space-y-4 text-sm leading-7 text-foreground"
+                className="wiki-content space-y-4 text-sm leading-7 text-foreground"
                 dangerouslySetInnerHTML={{ __html: html }}
+                onClick={handleWikiClick}
               />
             ) : (
               <div className="space-y-2 text-sm text-muted-foreground">

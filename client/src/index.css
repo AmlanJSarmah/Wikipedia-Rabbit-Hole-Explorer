@@ -127,3 +127,16 @@
     @apply font-sans;
     }
 }
+
+.wiki-content a {
+  color: var(--primary);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 150ms ease;
+}
+
+.wiki-content a:hover,
+.wiki-content a:focus-visible {
+  color: var(--foreground);
+}
