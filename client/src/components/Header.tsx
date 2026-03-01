@@ -1,4 +1,5 @@
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
 import type { Dispatch, SetStateAction, SubmitEvent } from 'react';
 
 type HeaderProps = {
@@ -25,17 +26,16 @@ function Header({ query, isLoading, setQuery, handleSubmit }: HeaderProps) {
       </header>
 
       <form
-        className="flex w-full flex-col gap-3 sm:flex-row"
+        className="flex w-full flex-col gap-3 sm:flex-row items-center"
         onSubmit={handleSubmit}
       >
-        <input
-          aria-label="Search query"
-          className="h-11 flex-1 rounded-lg border border-input bg-background px-4 text-sm shadow-sm outline-none transition focus-visible:ring-2 focus-visible:ring-ring"
+        <Input
           placeholder="Search for a page..."
           value={query}
           onChange={event => setQuery(event.target.value)}
+          disabled={isLoading}
         />
-        <Button className="h-11 px-6" disabled={isLoading} type="submit">
+        <Button className="px-6" disabled={isLoading} type="submit">
           {isLoading ? 'Searching...' : 'Search'}
         </Button>
       </form>

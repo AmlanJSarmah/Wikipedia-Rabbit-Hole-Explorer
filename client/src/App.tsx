@@ -80,14 +80,14 @@ function App() {
 
   return (
     <div className="min-h-svh bg-background text-foreground">
-      <div className="mx-auto flex w-[90%] flex-col gap-8 pb-16 pt-12 lg:w-[70%]">
+      <div className="mx-auto flex w-[90%] flex-col gap-8 pb-16 pt-12 lg:w-[70%] items-center">
         <Header
           query={query}
           isLoading={isLoading}
           setQuery={setQuery}
           handleSubmit={handleSubmit}
         ></Header>
-        {error ? <Error message={error}></Error> : null}
+        {error ? <Error message={error} /> : null}
       </div>
       <WikipediaViewer
         html={html}

@@ -17,7 +17,6 @@ function WikipediaViewer({ html, handleWikiClick }: WikipediaViewerProps) {
           />
         ) : (
           <div className="space-y-2 text-sm text-muted-foreground">
-            <p>No results yet.</p>
             <p>Search for a topic to load HTML content here.</p>
           </div>
         )}
