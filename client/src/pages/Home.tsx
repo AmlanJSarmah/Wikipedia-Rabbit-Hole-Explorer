@@ -2,7 +2,7 @@ import type { SubmitEvent, MouseEvent } from 'react';
 import { useState } from 'react';
 import Header from '@/components/Header';
 import WikipediaViewer from '@/components/WikipediaViewer';
-import Error from '@/components/Error.tsx';
+import ErrorNotification from '@/components/ErrorNotification.tsx';
 
 function HomePage() {
   const [query, setQuery] = useState('');
@@ -87,7 +87,7 @@ function HomePage() {
           setQuery={setQuery}
           handleSubmit={handleSubmit}
         ></Header>
-        {error ? <Error message={error} /> : null}
+        {error ? <ErrorNotification message={error} /> : null}
       </div>
       <WikipediaViewer
         html={html}

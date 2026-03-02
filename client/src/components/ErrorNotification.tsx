@@ -1,11 +1,11 @@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { IconExclamationCircle } from '@tabler/icons-react';
 
-type ErrorProps = {
+type ErrorNotificationProps = {
   message: string;
 };
 
-function Error({ message }: ErrorProps) {
+function ErrorNotification({ message }: ErrorNotificationProps) {
   return (
     <Alert variant="destructive" className="max-w-md">
       <IconExclamationCircle />
@@ -15,4 +15,4 @@ function Error({ message }: ErrorProps) {
   );
 }
 
-export default Error;
+export default ErrorNotification;
