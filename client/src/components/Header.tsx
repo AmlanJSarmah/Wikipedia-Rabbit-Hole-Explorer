@@ -1,6 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import type { Dispatch, SetStateAction, SubmitEvent } from 'react';
+import { Link } from 'react-router-dom';
 
 type HeaderProps = {
   query: string;
@@ -35,8 +36,11 @@ function Header({ query, isLoading, setQuery, handleSubmit }: HeaderProps) {
           onChange={event => setQuery(event.target.value)}
           disabled={isLoading}
         />
-        <Button className="px-6" disabled={isLoading} type="submit">
+        <Button className="px-6" disabled={isLoading}>
           {isLoading ? 'Searching...' : 'Search'}
+        </Button>
+        <Button className="px-6" disabled={isLoading}>
+          <Link to="/visualize">Visualize</Link>
         </Button>
       </form>
     </>
