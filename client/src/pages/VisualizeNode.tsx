@@ -19,13 +19,11 @@ const initialNodes: Node[] = [
     id: '1',
     data: { label: 'Node 1' },
     position: { x: 5, y: 5 },
-    extent: 'parent',
   },
   {
     id: '2',
     data: { label: 'Node 2' },
     position: { x: 5, y: 100 },
-    extent: 'parent',
   },
 ];
 

@@ -10,6 +10,7 @@ import { AppError } from './utils/error.js';
 import { ZodError } from 'zod';
 // Router
 import wikipediaRoutes from './routes/wikipedia.routes.js';
+import authRoutes from './routes/auth.routes.js';
 
 const app = express();
 
@@ -18,6 +19,7 @@ app.use(cors());
 
 // Routes
 app.use('/wikipedia', wikipediaRoutes);
+app.use('/user', authRoutes);
 
 // Error Handling
 app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {

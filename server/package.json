@@ -20,6 +20,8 @@
     "dotenv": "^17.3.1",
     "express": "^5.2.1",
     "jsdom": "^28.1.0",
+    "mongodb": "^7.1.0",
+    "mongoose": "^9.2.4",
     "zod": "^4.3.6"
   },
   "devDependencies": {
@@ -29,6 +31,7 @@
     "@types/dotenv": "^6.1.1",
     "@types/express": "^5.0.6",
     "@types/jsdom": "^28.0.0",
+    "@types/mongoose": "^5.11.96",
     "prettier": "^3.8.1",
     "tsx": "^4.21.0",
     "typescript": "^5.9.3"
