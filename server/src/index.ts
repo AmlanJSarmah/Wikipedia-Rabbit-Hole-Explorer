@@ -11,6 +11,8 @@ import { ZodError } from 'zod';
 // Router
 import wikipediaRoutes from './routes/wikipedia.routes.js';
 import authRoutes from './routes/auth.routes.js';
+// DB
+import { connectToDB } from './config/db.js';
 
 const app = express();
 
@@ -36,6 +38,9 @@ app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
 });
 
 // Start Server
-app.listen(env.PORT, () => {
-  console.log(`Server Starting on Port ${env.PORT}...`);
-});
+(async () => {
+  await connectToDB();
+  app.listen(env.PORT, () => {
+    console.log(`Server running on port ${env.PORT}`);
+  });
+})();
