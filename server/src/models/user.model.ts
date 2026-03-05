@@ -13,14 +13,14 @@ type Edges = {
 };
 
 interface IUser extends mongoose.Document {
-  name: string;
+  username: string;
   password: string;
   nodes: Nodes[];
   edges: Edges[];
 }
 
 const userSchema = new Schema<IUser>({
-  name: {
+  username: {
     type: String,
     required: true,
   },

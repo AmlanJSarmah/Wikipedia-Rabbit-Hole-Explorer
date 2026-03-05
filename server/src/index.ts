@@ -15,6 +15,7 @@ import authRoutes from './routes/auth.routes.js';
 import { connectToDB } from './config/db.js';
 
 const app = express();
+app.use(express.json());
 
 // Handling CORS
 app.use(cors());
@@ -25,6 +26,7 @@ app.use('/user', authRoutes);
 
 // Error Handling
 app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
+  console.error(err);
   if (err instanceof ZodError) {
     return res.status(400).json({ message: 'Validation failed.', error: err });
   }
@@ -33,7 +35,6 @@ app.use((err: unknown, req: Request, res: Response, next: NextFunction) => {
       .status(err.statusCode)
       .json({ message: err.message, error: err });
   }
-  console.error(err);
   return res.status(500).json({ message: 'Internal Server Error', error: err });
 });
 
