@@ -4,6 +4,7 @@ const envSchema = z.object({
   PORT: z.coerce.number(),
   DATABASE_URL: z.string(),
   SALT: z.coerce.number(),
+  JWT_SECRET: z.string(),
 });
 
 const parsed = envSchema.safeParse(process.env);
