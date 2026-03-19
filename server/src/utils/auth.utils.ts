@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import { authHeaderSchema, jwtVerifySchema } from '../schemas/user.schema.js';
 import { env } from '../config/env.js';
+import { AppError } from './error.js';
 
 export const isAuthenticated = (
   req: Request,
@@ -19,6 +20,6 @@ export const isAuthenticated = (
     };
     next();
   } catch (err) {
-    next(err);
+    next(new AppError(401, 'Unauthorized'));
   }
 };
