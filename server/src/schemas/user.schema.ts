@@ -9,3 +9,9 @@ export const userSignInSchema = z.object({
   username: z.string(),
   password: z.string(),
 });
+
+export const authHeaderSchema = z.string();
+
+export const jwtVerifySchema = z.object({
+  username: z.string(),
+});

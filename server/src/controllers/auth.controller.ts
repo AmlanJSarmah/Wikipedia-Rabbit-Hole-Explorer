@@ -34,7 +34,7 @@ export const handleUserLogin = async (
     if (user && (await compare(reqBodyParsed.password, user.password))) {
       const token = jwt.sign(
         {
-          userName: reqBodyParsed.username,
+          username: reqBodyParsed.username,
         },
         env.JWT_SECRET,
         { expiresIn: '1hr' }
