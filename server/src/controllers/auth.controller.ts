@@ -37,7 +37,7 @@ export const handleUserLogin = async (
           username: reqBodyParsed.username,
         },
         env.JWT_SECRET,
-        { expiresIn: '1hr' }
+        { expiresIn: '1h' }
       );
       res
         .status(200)
