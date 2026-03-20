@@ -14,24 +14,31 @@ import '@xyflow/react/dist/style.css';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
-const initialNodes: Node[] = [
-  {
-    id: '1',
-    data: { label: 'Node 1' },
-    position: { x: 5, y: 5 },
-  },
-  {
-    id: '2',
-    data: { label: 'Node 2' },
-    position: { x: 5, y: 100 },
-  },
-];
+type Nodes = Node[] | null;
+type Edges = Edge[] | null;
 
-const initialEdges: Edge[] = [{ id: 'e1-2', source: '1', target: '2' }];
+//const initialNodes: Nodes = [
+//  {
+//    id: '1',
+//    data: { label: 'Node 1' },
+//    position: { x: 5, y: 5 },
+//  },
+//  {
+//    id: '2',
+//    data: { label: 'Node 2' },
+//    position: { x: 5, y: 100 },
+//  },
+//];
+//
+//const initialEdges: Edges = [{ id: 'e1-2', source: '1', target: '2' }];
+//
+
+const initialNodes: Nodes = null;
+const initialEdges: Edges = null;
 
 function VisualizeNode() {
-  const [nodes, setNodes] = useState<Node[]>(initialNodes);
-  const [edges, setEdges] = useState<Edge[]>(initialEdges);
+  const [nodes, setNodes] = useState<Nodes>(initialNodes);
+  const [edges, setEdges] = useState<Edges>(initialEdges);
 
   const onNodesChange: OnNodesChange = useCallback(
     changes => setNodes(nds => applyNodeChanges(changes, nds)),
@@ -69,24 +76,28 @@ function VisualizeNode() {
         </div>
 
         <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
-          <div className="h-[70vh] w-full">
-            <ReactFlow
-              nodes={nodes}
-              edges={edges}
-              onNodesChange={onNodesChange}
-              onEdgesChange={onEdgesChange}
-              onConnect={onConnect}
-              elementsSelectable={false}
-              nodesConnectable={false}
-              panOnDrag={false}
-              panOnScroll={false}
-              zoomOnScroll={false}
-              zoomOnPinch={false}
-              zoomOnDoubleClick={false}
-              minZoom={1}
-              maxZoom={1}
-              fitView
-            />
+          <div className="h-[70vh] w-full flex items-center justify-center">
+            {nodes && edges ? (
+              <ReactFlow
+                nodes={nodes}
+                edges={edges}
+                onNodesChange={onNodesChange}
+                onEdgesChange={onEdgesChange}
+                onConnect={onConnect}
+                elementsSelectable={false}
+                nodesConnectable={false}
+                panOnDrag={false}
+                panOnScroll={false}
+                zoomOnScroll={false}
+                zoomOnPinch={false}
+                zoomOnDoubleClick={false}
+                minZoom={1}
+                maxZoom={1}
+                fitView
+              />
+            ) : (
+              <h1 className="text-2xl font-semibold md:text-3xl">Empty</h1>
+            )}
           </div>
         </div>
       </div>
