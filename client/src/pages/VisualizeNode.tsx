@@ -14,34 +14,35 @@ import '@xyflow/react/dist/style.css';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
 
-type Nodes = Node[] | null;
-type Edges = Edge[] | null;
+type Nodes = Node[];
+type Edges = Edge[];
 
 //const initialNodes: Nodes = [
-//  {
-//    id: '1',
-//    data: { label: 'Node 1' },
-//    position: { x: 5, y: 5 },
-//  },
-//  {
-//    id: '2',
-//    data: { label: 'Node 2' },
-//    position: { x: 5, y: 100 },
-//  },
+//{
+//id: '1',
+//data: { label: 'Node 1' },
+//position: { x: 5, y: 5 },
+//},
+//{
+//id: '2',
+//data: { label: 'Node 2' },
+//position: { x: 5, y: 100 },
+//},
 //];
-//
-//const initialEdges: Edges = [{ id: 'e1-2', source: '1', target: '2' }];
-//
 
-const initialNodes: Nodes = null;
-const initialEdges: Edges = null;
+//const initialEdges: Edges = [{ id: 'e1-2', source: '1', target: '2' }];
+
+const initialNodes: Nodes = [];
+const initialEdges: Edges = [];
 
 function VisualizeNode() {
   const [nodes, setNodes] = useState<Nodes>(initialNodes);
   const [edges, setEdges] = useState<Edges>(initialEdges);
 
   const onNodesChange: OnNodesChange = useCallback(
-    changes => setNodes(nds => applyNodeChanges(changes, nds)),
+    changes => {
+      setNodes(nds => applyNodeChanges(changes, nds));
+    },
     [setNodes]
   );
   const onEdgesChange: OnEdgesChange = useCallback(
@@ -77,7 +78,7 @@ function VisualizeNode() {
 
         <div className="rounded-2xl border border-border bg-card p-4 shadow-sm">
           <div className="h-[70vh] w-full flex items-center justify-center">
-            {nodes && edges ? (
+            {nodes.length > 0 && edges.length > 0 ? (
               <ReactFlow
                 nodes={nodes}
                 edges={edges}
